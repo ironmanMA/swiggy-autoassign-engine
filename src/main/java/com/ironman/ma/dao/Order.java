@@ -4,6 +4,13 @@ import java.util.Date;
 
 /**
  * Created by 127.0.0.1.ma on 28/08/17.
+ *
+ * An Order refers to order placed by an individual,
+ * params like
+ *  creationTime, zoneId are pickup from data store
+ *  isPriority refers to a customer being "Prime Customer"
+ *      this gives the order a priority and will be tried to fullfill faster
+ *
  */
 public class Order extends SwiggyObject {
 

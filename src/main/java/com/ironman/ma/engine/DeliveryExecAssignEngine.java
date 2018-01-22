@@ -13,6 +13,7 @@ import java.util.List;
  * Created by 127.0.0.1.ma on 28/08/17.
  */
 public class DeliveryExecAssignEngine implements AutoAssignEngine {
+
     DeliveryExecEntitiy deliveryExecEntitiy = new DeliveryExecEntitiy();
 
     public List<DeliveryExec> pickUpBestEntity() {
@@ -26,20 +27,32 @@ public class DeliveryExecAssignEngine implements AutoAssignEngine {
         /*
             can read these from any service of config table on database
          */
-        double WAIT_TIME_MULTIPLIER = 1, TRAVEL_TIME_MULTIPLIER = 0.8;
+        double WAIT_TIME_MULTIPLIER = 1,
+                TRAVEL_TIME_MULTIPLIER = 0.8;
 
-        Order order = (Order) swiggyObject;
+
         /*
-            get DEs in the same zone of the order
+            DeliveryExec understands order.
+         */
+        Order order = (Order) swiggyObject;
+
+        /*
+            get DeliveryExecs in the same zone of the order,
+            this method can return neighbouring zoneID DeliveryExecs too
          */
         List<DeliveryExec> deliveryExecs = deliveryExecEntitiy.getAllEntitiesInZone(order.getZoneId());
+
+        /*
+            calculate cost of utilizing a executive.
+         */
         double min_cost = Long.MAX_VALUE;
         DeliveryExec bestDeliveryExec = null;
         Date date = new Date();
         for (int i = 0; i < deliveryExecs.size(); i++) {
             DeliveryExec deliveryExec = deliveryExecs.get(i);
+
             /*
-                calculate rank of DE's
+                calculate rank of DE's, in this case cost of util
              */
             double total_cost = WAIT_TIME_MULTIPLIER * (deliveryExec.getDelayTime(date)) +
                     TRAVEL_TIME_MULTIPLIER * (deliveryExec.getTravelDistFromOrder(order));
@@ -49,6 +62,9 @@ public class DeliveryExecAssignEngine implements AutoAssignEngine {
             }
         }
         deliveryExecList.add(bestDeliveryExec);
+
+
+        //return the exec with least cost util
         return deliveryExecList;
     }
 }

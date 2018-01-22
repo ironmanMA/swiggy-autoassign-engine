@@ -14,11 +14,17 @@ import java.util.List;
 public class OrderAssignEngine implements AutoAssignEngine {
     OrderEntity orderEntity = new OrderEntity();
 
+
+    /*
+        picks up orders that needs to be fulfilled urgently
+     */
     public List<Order> pickUpBestEntity() {
         List<Order> orders = new ArrayList<Order>();
-        List<Order> swiggyObjects = orderEntity.getAllPriorityEntities();
-        if (swiggyObjects.size() > 0) {
-            orders.add(getOldestOrder(swiggyObjects));
+
+        //finish up oldest priority orders the first
+        List<Order> allPriorityEntities = orderEntity.getAllPriorityEntities();
+        if (allPriorityEntities.size() > 0) {
+            orders.add(getOldestOrder(allPriorityEntities));
         } else {
             orders.add(getOldestOrder(orderEntity.getAllEntities()));
         }
@@ -40,6 +46,9 @@ public class OrderAssignEngine implements AutoAssignEngine {
         return swiggyObject;
     }
 
+    /*
+        this could be extended to pickup best order that needs to be fulfilled
+     */
     public List<SwiggyObject> pickUpBestEntity(SwiggyObject swiggyObject) {
         return null;
     }

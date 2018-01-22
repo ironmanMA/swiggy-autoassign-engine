@@ -2,6 +2,9 @@ package com.ironman.ma.dao;
 
 /**
  * Created by 127.0.0.1.ma on 28/08/17.
+ *
+ * Every object in swiggy's terms is considered a an entity to move from source to destination
+ *
  */
 public abstract class SwiggyObject {
     Float latitdue, longitude;
